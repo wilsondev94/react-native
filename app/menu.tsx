@@ -3,6 +3,7 @@ import { MENU_ITEMS } from "@/constants/menu-items";
 import { Colors } from "@/constants/theme";
 import {
   Appearance,
+  ColorSchemeName,
   FlatList,
   Image,
   Platform,
@@ -13,6 +14,16 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+interface Theme {
+  text: string;
+  background: string;
+  headerBackground: string;
+  tint: string;
+  icon: string;
+  tabIconDefault: string;
+  tabIconSelected: string;
+}
+
 export default function MenuScreen() {
   const colorScheme = Appearance.getColorScheme();
   const theme = colorScheme === "dark" ? Colors.dark : Colors.light;
@@ -22,7 +33,9 @@ export default function MenuScreen() {
 
   const separatorComponent = <View style={styles.separator} />;
   // const headerComponent = <Text>Top of List</Text>;
-  const footerComponent = <Text>End of Menu</Text>;
+  const footerComponent = (
+    <Text style={{ color: theme.text }}>End of Menu</Text>
+  );
 
   return (
     <Container>
@@ -39,10 +52,16 @@ export default function MenuScreen() {
         renderItem={({ item }) => (
           <View style={styles.row}>
             <View style={styles.menuTextRow}>
-              <Text>{item.title}</Text>
-              <Text>{item.description}</Text>
+              <Text style={[styles.menuItemTitle, styles.menuItemText]}>
+                {item.title}
+              </Text>
+              <Text
+              // style={styles.menuItemText}
+              >
+                {item.description}
+              </Text>
             </View>
-            <Image source={MENU_IMAGES[item.id - 1]} />
+            <Image source={MENU_IMAGES[item.id - 1]} style={styles.menuImage} />
           </View>
         )}
       />
@@ -50,7 +69,7 @@ export default function MenuScreen() {
   );
 }
 
-function createStyles(theme, colorScheme) {
+function createStyles(theme: Theme, colorScheme: ColorSchemeName) {
   return StyleSheet.create({
     contentContainer: {
       paddingTop: 10,
@@ -91,6 +110,19 @@ function createStyles(theme, colorScheme) {
       paddingLeft: 10,
       paddingRight: 5,
       flexGrow: 1,
+    },
+    menuItemTitle: {
+      fontSize: 18,
+      textDecorationLine: "underline",
+    },
+    menuItemText: {
+      // color:theme.text,
+      color: colorScheme === "dark" ? "#000" : "papayawhip",
+    },
+
+    menuImage: {
+      width: 100,
+      height: 100,
     },
   });
 }
