@@ -1,6 +1,7 @@
 import MENU_IMAGES from "@/constants/menu-images";
 import { MENU_ITEMS } from "@/constants/menu-items";
 import { Colors } from "@/constants/theme";
+import { Theme } from "@/types";
 import {
   Appearance,
   ColorSchemeName,
@@ -13,16 +14,6 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-interface Theme {
-  text: string;
-  background: string;
-  headerBackground: string;
-  tint: string;
-  icon: string;
-  tabIconDefault: string;
-  tabIconSelected: string;
-}
 
 export default function MenuScreen() {
   const colorScheme = Appearance.getColorScheme();
