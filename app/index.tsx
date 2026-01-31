@@ -1,87 +1,48 @@
-import { Link } from "expo-router";
-import {
-  ImageBackground,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { data } from "@/data/todo";
+import { useState } from "react";
+import { Pressable, Text, TextInput, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-// @ts-ignore
-import icedCoffeeImage from "@/assets/images/iced-coffee.png";
+interface TodoData {
+  id: number;
+  title: string;
+  completed: boolean;
+}
 
-const app = () => {
-  return (
-    <View style={styles.container}>
-      <ImageBackground
-        source={icedCoffeeImage}
-        resizeMode="cover"
-        style={styles.image}
-      >
-        <Text style={styles.title}>Coffee Shop</Text>
+export interface Theme {
+  text: string;
+  background: string;
+  icon: string;
+  button: string;
+}
 
-        <Link href="/menu" style={{ marginHorizontal: "auto" }} asChild>
-          <Pressable style={styles.btn}>
-            <Text style={styles.btnText}>Menu</Text>
-          </Pressable>
-        </Link>
-        <Link href="/contact" style={{ marginHorizontal: "auto" }} asChild>
-          <Pressable style={styles.btn}>
-            <Text style={styles.btnText}>Contact Us</Text>
-          </Pressable>
-        </Link>
-      </ImageBackground>
-    </View>
+export default function Index() {
+  const [todos, setTodos] = useState<TodoData[]>(
+    data.sort((a, b) => b.id - a.id),
   );
-};
+  const [text, setText] = useState("");
 
-export default app;
+  const addTodo = () => {
+    if (text.trim()) {
+      const newId = todos.length > 0 ? todos[0].id + 1 : 1;
+      setTodos([{ id: newId, title: text, completed: false }, ...todos]);
+      setText("");
+    }
+  };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-  },
-  image: {
-    width: "100%",
-    height: "100%",
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
-  },
-  link: {
-    color: "white",
-    fontSize: 42,
-    fontWeight: "bold",
-    textAlign: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    textDecorationLine: "underline",
-    padding: 4,
-  },
-
-  title: {
-    color: "white",
-    fontSize: 42,
-    fontWeight: "bold",
-    textAlign: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    marginBottom: 120,
-  },
-
-  btn: {
-    height: 50,
-    width: 150,
-    borderRadius: 15,
-    backgroundColor: "rgba(0, 0, 0, 0.75)",
-    padding: 6,
-    marginBottom: 50,
-    justifyContent: "center",
-  },
-  btnText: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
-    padding: 4,
-  },
-});
+  return (
+    <SafeAreaView>
+      <View>
+        <TextInput
+          placeholder="Add a new todo"
+          placeholderTextColor="gray"
+          value={text}
+          onChangeText={setText}
+        />
+        <Pressable onPress={addTodo}>
+          <Text>Add</Text>
+        </Pressable>
+      </View>
+    </SafeAreaView>
+  );
+}
