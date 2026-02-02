@@ -1,4 +1,5 @@
 import { data } from "@/data/todo";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import {
   FlatList,
@@ -58,13 +59,12 @@ export default function Index() {
         {item.title}
       </Text>
       <Pressable onPress={() => removeTodo(item.id)}>
-        {/* <MaterialCommunityIcons
+        <MaterialCommunityIcons
           name="delete-circle"
           size={36}
           color="red"
           selectable={undefined}
-        /> */}
-        <Text style={{ color: "#fff" }}>Delete</Text>
+        />
       </Pressable>
     </View>
   );
