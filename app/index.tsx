@@ -104,23 +104,13 @@ export default function Index() {
           }
           style={{ marginLeft: 10 }}
         >
-          {colorScheme === "dark" ? (
-            <Octicons
-              name="moon"
-              siz={16}
-              color={theme.text}
-              selectable={undefined}
-              style={{ width: 36 }}
-            />
-          ) : (
-            <Octicons
-              name="sun"
-              siz={16}
-              color={theme.text}
-              selectable={undefined}
-              style={{ width: 36 }}
-            />
-          )}
+          <Octicons
+            name={colorScheme === "dark" ? "moon" : "sun"}
+            siz={16}
+            color={theme.text}
+            selectable={undefined}
+            style={{ width: 36 }}
+          />
         </Pressable>
       </View>
       <FlatList
