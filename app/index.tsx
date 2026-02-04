@@ -6,13 +6,13 @@ import Octicons from "@expo/vector-icons/Octicons";
 import { useState } from "react";
 import {
   ColorSchemeName,
-  FlatList,
   Pressable,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from "react-native";
+import Animated, { LinearTransition } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 interface TodoData {
@@ -113,11 +113,13 @@ export default function Index() {
           />
         </Pressable>
       </View>
-      <FlatList
+      <Animated.FlatList
         data={todos}
         renderItem={renderItem}
         keyExtractor={(todo) => String(todo.id)}
         contentContainerStyle={{ flexGrow: 1 }}
+        itemLayoutAnimation={LinearTransition}
+        keyboardDismissMode="on-drag"
       />
     </SafeAreaView>
   );
