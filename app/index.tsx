@@ -3,7 +3,8 @@ import { data } from "@/data/todo";
 import { Inter_500Medium, useFonts } from "@expo-google-fonts/inter";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Octicons from "@expo/vector-icons/Octicons";
-import { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
 import {
   ColorSchemeName,
   Pressable,
@@ -29,9 +30,7 @@ export interface Theme {
 }
 
 export default function Index() {
-  const [todos, setTodos] = useState<TodoData[]>(
-    data.sort((a, b) => b.id - a.id),
-  );
+  const [todos, setTodos] = useState<TodoData[]>([]);
   const [text, setText] = useState("");
 
   const { colorScheme, setColorScheme, theme } = useTheme();
@@ -39,6 +38,39 @@ export default function Index() {
   const [loaded, error] = useFonts({
     Inter_500Medium,
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem("TodoApp");
+
+        const storageTodos: TodoData[] =
+          jsonValue !== null ? JSON.parse(jsonValue) : null;
+
+        if (storageTodos && storageTodos.length) {
+          setTodos(storageTodos.sort((a, b) => b.id - a.id));
+        } else {
+          setTodos(data.sort((a, b) => b.id - a.id));
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
+  useEffect(() => {
+    const storeData = async () => {
+      try {
+        const jsonValue = JSON.stringify(todos);
+        await AsyncStorage.setItem("TodoApp", jsonValue);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    storeData();
+  }, [todos]);
 
   if (!loaded && !error) {
     return null;
