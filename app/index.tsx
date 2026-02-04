@@ -4,6 +4,8 @@ import { Inter_500Medium, useFonts } from "@expo-google-fonts/inter";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Octicons from "@expo/vector-icons/Octicons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import {
   ColorSchemeName,
@@ -30,6 +32,7 @@ export interface Theme {
 }
 
 export default function Index() {
+  const router = useRouter();
   const [todos, setTodos] = useState<TodoData[]>([]);
   const [text, setText] = useState("");
 
@@ -95,17 +98,26 @@ export default function Index() {
   const removeTodo = (id: number) => {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
+  const handlePress = (id: number) => {
+    // router.push(`/todos/${id}`);
+    router.push({
+      pathname: "/todos/[id]",
+      params: { id },
+    });
+  };
 
   const styles = createStyles(theme, colorScheme);
 
   const renderItem = ({ item }: { item: TodoData }) => (
     <View style={styles.todoItem}>
-      <Text
-        style={[styles.todoText, item.completed && styles.completedText]}
-        onPress={() => toggleTodo(item.id)}
+      <Pressable
+        onPress={() => handlePress(item.id)}
+        onLongPress={() => toggleTodo(item.id)}
       >
-        {item.title}
-      </Text>
+        <Text style={[styles.todoText, item.completed && styles.completedText]}>
+          {item.title}
+        </Text>
+      </Pressable>
       <Pressable onPress={() => removeTodo(item.id)}>
         <MaterialCommunityIcons
           name="delete-circle"
@@ -153,6 +165,7 @@ export default function Index() {
         itemLayoutAnimation={LinearTransition}
         keyboardDismissMode="on-drag"
       />
+      <StatusBar style={colorScheme === "dark" ? "light" : "dark"} />
     </SafeAreaView>
   );
 }
