@@ -82,6 +82,7 @@ export default function EditScreen() {
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
+          maxLength={30}
           placeholder="Edit todo"
           placeholderTextColor="gray"
           value={todo?.title || ""}
