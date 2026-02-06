@@ -1,9 +1,12 @@
 export interface Theme {
   text: string;
   background: string;
-  headerBackground: string;
-  tint: string;
   icon: string;
-  tabIconDefault: string;
-  tabIconSelected: string;
+  button: string;
+}
+
+export interface TodoData {
+  id: number;
+  title: string;
+  completed: boolean;
 }

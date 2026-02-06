@@ -1,5 +1,6 @@
 import { useTheme } from "@/constext/ThemeContext";
 import { data } from "@/data/todo";
+import { Theme, TodoData } from "@/types";
 import { Inter_500Medium, useFonts } from "@expo-google-fonts/inter";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Octicons from "@expo/vector-icons/Octicons";
@@ -17,19 +18,6 @@ import {
 } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-interface TodoData {
-  id: number;
-  title: string;
-  completed: boolean;
-}
-
-export interface Theme {
-  text: string;
-  background: string;
-  icon: string;
-  button: string;
-}
 
 export default function Index() {
   const router = useRouter();
